@@ -13,15 +13,15 @@ namespace LibraryManagmentSystem.Models
         }
 
 
-        DbSet<Book> Books { get; set; }
-        DbSet<CheckOut> CheckOuts { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<CheckOut> CheckOuts { get; set; }
 
-        DbSet<Return> Returns { get; set; }
+        public DbSet<Return> Returns { get; set; }
 
-        DbSet<BooksCheckedOut> BooksCheckedOuts { get; set; }
+        public DbSet<BooksCheckedOut> BooksCheckedOuts { get; set; }
 
-        DbSet<Profile> Profile { get; set; }
+        public DbSet<Profile> Profile { get; set; }
 
-        DbSet<Return> returns { get; set; }
+        public DbSet<Return> returns { get; set; }
     }
 }
