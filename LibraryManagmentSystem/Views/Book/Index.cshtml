@@ -1,0 +1,19 @@
+﻿@model List<Book>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@foreach(var book in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <img src="@Url.Action("GetImage","Book",new {id = book.Id})" class="card-img-top">
+        <div class="card-body">
+            <h5 class="card-title">@book.Title</h5>
+            <p class="card-text">Available Quantity : @book.quantity</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+}
+

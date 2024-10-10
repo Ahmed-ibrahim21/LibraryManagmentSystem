@@ -1,4 +1,5 @@
 using LibraryManagmentSystem.Models;
+using LibraryManagmentSystem.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,13 @@ namespace LibraryManagmentSystem
             });
 
             builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<LibraryContext>();
+
+            builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IBooksCheckedOutRepository, BooksCheckedOutRepository>();
+            builder.Services.AddScoped<IReturnRepository, ReturnRepository>();
+            builder.Services.AddScoped<IBooksReturnedRepository, BooksReturnedRepository>();
+            builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
+            builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 
             var app = builder.Build();
 
