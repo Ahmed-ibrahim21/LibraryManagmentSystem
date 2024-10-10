@@ -12,7 +12,8 @@
         <div class="card-body">
             <h5 class="card-title">@book.Title</h5>
             <p class="card-text">Available Quantity : @book.quantity</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="/Book/UpdateBook/@book.Id" class="btn btn-primary">Edit</a>
+            <a href="/Book/DeleteBook/@book.Id" class="btn btn-danger">Delete</a>
         </div>
     </div>
 }
