@@ -4,6 +4,7 @@ using LibraryManagmentSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagmentSystem.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20241010071042_addedReturnedBooksClass")]
+    partial class addedReturnedBooksClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,8 +93,6 @@ namespace LibraryManagmentSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReturnId");
 
                     b.HasIndex("BooksCheckedOutCheckOutId", "BooksCheckedOutBookId");
 
@@ -400,19 +401,11 @@ namespace LibraryManagmentSystem.Migrations
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.BooksReturned", b =>
                 {
-                    b.HasOne("LibraryManagmentSystem.Models.Return", "Return")
-                        .WithMany()
-                        .HasForeignKey("ReturnId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LibraryManagmentSystem.Models.BooksCheckedOut", "BooksCheckedOut")
                         .WithMany()
                         .HasForeignKey("BooksCheckedOutCheckOutId", "BooksCheckedOutBookId");
 
                     b.Navigation("BooksCheckedOut");
-
-                    b.Navigation("Return");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.CheckOut", b =>

@@ -6,15 +6,13 @@ namespace LibraryManagmentSystem.Models
     {
         public int Id { get; set; }
         public int Penalty { get; set; }
-        [ForeignKey("User")]
+        [ForeignKey(nameof(Librarian))]
         public string? LibrarianId { get; set; }
 
         public User? Librarian { get; set; }
-        [ForeignKey("User")]
+        [ForeignKey(nameof(Member))]
         public string? MemberId { get; set; }
         public User? Member { get; set; }
-        public DateTime DueDate { get; set; }
-        public DateTime BorrowDate { get; set; }
-        List<Book>? ReturnedBooks { get; set; }
+        List<BooksReturned>? ReturnedBooks { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace LibraryManagmentSystem.Models
 {
@@ -23,5 +24,7 @@ namespace LibraryManagmentSystem.Models
         public DbSet<Profile> Profile { get; set; }
 
         public DbSet<Return> returns { get; set; }
+
+        public DbSet<BooksReturned> BooksReturned { get; set; }
     }
 }

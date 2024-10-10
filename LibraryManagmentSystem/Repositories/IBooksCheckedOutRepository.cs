@@ -6,7 +6,7 @@ namespace LibraryManagmentSystem.Repositories
     {
         public List<BooksCheckedOut> GetAll();
 
-        public BooksCheckedOut GetById(int id);
+        public BooksCheckedOut GetById(int id,int CheckoutId);
 
         public bool Add(BooksCheckedOut bookcheckedout);
         public bool Update(BooksCheckedOut bookcheckedout);
