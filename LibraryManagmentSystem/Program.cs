@@ -19,7 +19,13 @@ namespace LibraryManagmentSystem
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Library2"));
             });
 
-            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<LibraryContext>();
+            builder.Services.AddIdentity<User, IdentityRole>(
+                option =>
+                {
+                    option.Password.RequireNonAlphanumeric = false;
+                    option.Password.RequireUppercase = false;
+                }
+                ).AddEntityFrameworkStores<LibraryContext>();
 
             builder.Services.AddScoped<IBookRepository, BookRepository>();
             builder.Services.AddScoped<IBooksCheckedOutRepository, BooksCheckedOutRepository>();
