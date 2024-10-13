@@ -1,4 +1,5 @@
 ﻿using LibraryManagmentSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagmentSystem.Repositories
 {
@@ -9,11 +10,13 @@ namespace LibraryManagmentSystem.Repositories
         {
             context = _context;
         }
-        public bool Add(Profile Profile)
+        public bool Add(string UserId)
         {
             try
             {
-                context.Profile.Add(Profile);
+                Profile profile = new Profile();
+                profile.MemberId = UserId;
+                context.Profile.Add(profile);
                 return true;
             }
             catch (Exception ex)
@@ -42,9 +45,9 @@ namespace LibraryManagmentSystem.Repositories
             return context.Profile.ToList();
         }
 
-        public Profile GetById(int id)
+        public Profile GetById(string id)
         {
-            return context.Profile.FirstOrDefault(C => C.Id == id);
+            return context.Profile.Include("Member").FirstOrDefault(C => C.MemberId == id);
         }
 
         public void Save()

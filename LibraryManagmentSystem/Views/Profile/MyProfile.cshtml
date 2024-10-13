@@ -1,0 +1,29 @@
+﻿@model Profile
+@{
+    ViewData["Title"] = "MyProfile";
+}
+
+<h1>Welcome @Model.Member.UserName</h1>
+
+<h2>Your Borrowing Limit : @Model.BorrowingLimit</h2>
+
+<div>
+    <!-- Form for uploading the profile picture -->
+    <form asp-action="UpdateProfilePic" asp-controller="Profile" method="post" enctype="multipart/form-data">
+        @if (Model.ProfilePic != null)
+        {
+            <label for="ProfilePicInput">
+                <img src="@Url.Action("GetImage","Profile",new {id = Model.MemberId})" alt="Profile Picture" style="width: 200px; height: 200px; cursor: pointer;" />
+            </label>
+        }
+        else
+        {
+            <label for="ProfilePicInput">
+                <img src="~/images/default.jpg" alt="Profile Picture" style="width: 200px; height: 200px; cursor: pointer;" />
+            </label>
+        }
+
+        <!-- Hidden file input for selecting a new profile picture -->
+        <input type="file" id="ProfilePicInput" name="ProfilePic" style="display:none;" onchange="this.form.submit();" />
+    </form>
+</div>

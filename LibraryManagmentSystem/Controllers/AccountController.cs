@@ -1,4 +1,5 @@
 ﻿using LibraryManagmentSystem.Models;
+using LibraryManagmentSystem.Repositories;
 using LibraryManagmentSystem.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace LibraryManagmentSystem.Controllers
     {
         UserManager<User> UserManager;
         SignInManager<User> SignInManager;
-        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager) 
+        IProfileRepository ProfileRepo;
+        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager,IProfileRepository profileRepo) 
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
+            this.ProfileRepo = profileRepo;
         }
 
         [HttpGet]
@@ -38,6 +41,8 @@ namespace LibraryManagmentSystem.Controllers
                 {
                     await UserManager.AddToRoleAsync(user, "Member");
                     await SignInManager.SignInAsync(user, false);
+                    ProfileRepo.Add(user.Id);
+                    ProfileRepo.Save();
                     return RedirectToAction("Index", "Book");
                 }
                 foreach (var item in result.Errors) 

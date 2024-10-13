@@ -13,6 +13,6 @@ namespace LibraryManagmentSystem.Models
         public byte[]? ProfilePic { get; set; }
        public List<BooksCheckedOut>? BorrowedBooks { get; set; }
 
-        public int BorrowingLimit { get; set; }
+        public int BorrowingLimit { get; set; } = 5;
     }
 }
