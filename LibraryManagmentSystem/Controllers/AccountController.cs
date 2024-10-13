@@ -88,7 +88,7 @@ namespace LibraryManagmentSystem.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]//requets.form['_requetss]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveLogin(LoginUserViewModel userViewModel)
         {
             if (ModelState.IsValid == true)
@@ -115,10 +115,10 @@ namespace LibraryManagmentSystem.Controllers
 
 
 
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> LogOut()
         {
             await SignInManager.SignOutAsync();
-            return View("Login");
+            return RedirectToAction("Login", "Account");
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using LibraryManagmentSystem.Models;
 using LibraryManagmentSystem.Repositories;
 using LibraryManagmentSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagmentSystem.Controllers
 {
+    [Authorize(Roles = "Librarian")]
     public class BookController : Controller
     {
         IBookRepository bookRepo;
@@ -14,6 +16,7 @@ namespace LibraryManagmentSystem.Controllers
             bookRepo = bookRepository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             List<Book> books = bookRepo.GetAll();
@@ -54,7 +57,7 @@ namespace LibraryManagmentSystem.Controllers
                 return View("AddBook",bookviewmodel);
             }
         }
-
+        [AllowAnonymous]
         public IActionResult GetImage(int id)
         {
             var book = bookRepo.GetById(id);
