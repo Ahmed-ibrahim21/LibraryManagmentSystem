@@ -12,5 +12,7 @@ namespace LibraryManagmentSystem.Repositories
         public bool Update(CheckOut CheckOut);
         public bool Delete(CheckOut CheckOut);
         public void Save();
+
+        public CheckOut GetUserCheckOut(string userId);
     }
 }

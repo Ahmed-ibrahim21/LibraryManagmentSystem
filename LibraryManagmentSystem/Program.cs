@@ -33,7 +33,8 @@ namespace LibraryManagmentSystem
             builder.Services.AddScoped<IBooksReturnedRepository, BooksReturnedRepository>();
             builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
             builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-
+            builder.Services.AddScoped<IUsersBooks, UsersBooksRepository>();
+                    
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

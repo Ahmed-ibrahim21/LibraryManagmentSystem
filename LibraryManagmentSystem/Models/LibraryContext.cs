@@ -9,6 +9,7 @@ namespace LibraryManagmentSystem.Models
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<UsersBooks>().HasKey(UB => new {UB.UserId,UB.BookId});
             base.OnModelCreating(builder);
         }
 
@@ -25,5 +26,7 @@ namespace LibraryManagmentSystem.Models
         public DbSet<Return> returns { get; set; }
 
         public DbSet<BooksReturned> BooksReturned { get; set; }
+
+        public DbSet<UsersBooks> UsersBooks { get; set; }
     }
 }

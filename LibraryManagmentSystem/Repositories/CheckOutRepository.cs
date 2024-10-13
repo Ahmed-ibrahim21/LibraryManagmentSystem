@@ -47,6 +47,20 @@ namespace LibraryManagmentSystem.Repositories
             return context.CheckOuts.FirstOrDefault(C => C.Id == id);
         }
 
+        public CheckOut GetUserCheckOut(string userId)
+        {
+            var checkout = context.CheckOuts.FirstOrDefault(c => c.MemberId == userId && c.status == 0);
+            if (checkout == null) 
+            {
+                checkout = new CheckOut();
+                return checkout;
+            }
+            else
+            {
+                return checkout;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();
