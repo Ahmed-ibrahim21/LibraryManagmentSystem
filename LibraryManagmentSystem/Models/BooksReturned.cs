@@ -8,6 +8,7 @@ namespace LibraryManagmentSystem.Models
         [ForeignKey("Return")]
         public int ReturnId { get; set; }
 
+        public int BooksCheckedOutId { get; set; }
         public Return? Return { get; set; }
         public BooksCheckedOut? BooksCheckedOut { get; set; }
     }

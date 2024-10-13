@@ -13,7 +13,6 @@ namespace LibraryManagmentSystem.Models
         public User? Librarian { get; set; }
 
         public int status { get; set; } //0 => Not Sent ; 1 => Sent ; 2 => Accepted ; 3 => Rejected
-        public int returnedBooksCount { get; set; }
         List<BooksCheckedOut>? booksCheckedOuts { get; set; }
     }
 }

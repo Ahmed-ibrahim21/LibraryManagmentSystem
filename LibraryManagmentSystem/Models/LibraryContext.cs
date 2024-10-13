@@ -9,7 +9,6 @@ namespace LibraryManagmentSystem.Models
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<BooksCheckedOut>().HasKey(B => new {B.CheckOutId,B.BookId});
             base.OnModelCreating(builder);
         }
 
