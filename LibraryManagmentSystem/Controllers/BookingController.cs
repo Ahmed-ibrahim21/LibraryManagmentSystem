@@ -2,6 +2,9 @@
 using LibraryManagmentSystem.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using System;
 
 namespace LibraryManagmentSystem.Controllers
 {
@@ -88,10 +91,40 @@ namespace LibraryManagmentSystem.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Librarian")]
-        public IActionResult ManangePendingCheckOuts()
+        public IActionResult ViewPendingCheckOuts()
         {
             var checkouts = checkOutRepository.GetAllPendingCheckOuts();
-            return View("ManagePendingCheckOuts",checkouts);
+            return View("viewcheckouts",checkouts);
+        }
+
+        public IActionResult ManageCheckOutRequests(int id)
+        {
+            var checkout = checkOutRepository.GetCheckout_BooksCheckedOut_User_Books(id);
+            return View("managecheckout",checkout);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Librarian")]
+        public IActionResult ManageCheckout(int CheckOutId, Dictionary<int, DateTime> DueDates)
+        {
+            if (ModelState.IsValid) 
+            {
+                var checkout = checkOutRepository.GetCheckout_BooksCheckedOut_User_Books(CheckOutId);
+
+                foreach (var bookCheckedOut in checkout.booksCheckedOuts)
+                {
+                    if (DueDates.ContainsKey(bookCheckedOut.Id))
+                    {
+                        bookCheckedOut.DueDate = DueDates[bookCheckedOut.Id];  // Assign DueDate
+                        bookCheckedOut.BorrowDate = DateTime.Now;  // Assign BorrowDate to current time
+                    }
+                }
+                checkout.status = 2;
+                string LibrarianId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                checkout.MemberId = LibrarianId;
+                checkOutRepository.Save();
+            }
+            return RedirectToAction("ViewPendingCheckOuts");  // Redirect back to the manage checkouts page
         }
     }
 }

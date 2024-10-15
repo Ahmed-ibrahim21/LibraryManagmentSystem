@@ -61,6 +61,12 @@ namespace LibraryManagmentSystem.Repositories
                 .Where(c => c.status == 1).ToList();
         }
 
+        public CheckOut GetCheckout_BooksCheckedOut_User_Books(int id)
+        {
+            return context.CheckOuts.Include(c => c.Member).Include(c => c.booksCheckedOuts)
+            .ThenInclude(bc => bc.Book).FirstOrDefault(C => C.Id == id);
+        }
+
         public CheckOut GetById(int id)
         {
             return context.CheckOuts.FirstOrDefault(C => C.Id == id);

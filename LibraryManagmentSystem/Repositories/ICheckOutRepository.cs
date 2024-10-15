@@ -19,5 +19,7 @@ namespace LibraryManagmentSystem.Repositories
 
         public List<CheckOut> GetAllPendingCheckOuts();
 
+        public CheckOut GetCheckout_BooksCheckedOut_User_Books(int id);
+
     }
 }
