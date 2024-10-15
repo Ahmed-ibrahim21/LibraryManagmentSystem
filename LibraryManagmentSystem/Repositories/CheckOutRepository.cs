@@ -1,4 +1,5 @@
 ﻿using LibraryManagmentSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagmentSystem.Repositories
 {
@@ -23,6 +24,8 @@ namespace LibraryManagmentSystem.Repositories
             }
         }
 
+
+
         public bool Delete(CheckOut CheckOut)
         {
             try
@@ -42,12 +45,28 @@ namespace LibraryManagmentSystem.Repositories
             return context.CheckOuts.ToList();
         }
 
+        public List<CheckOut> GetAllCheckOutsForUser(string userId)
+        {
+            return context.CheckOuts
+            .Include(c => c.booksCheckedOuts) // Include the list of BooksCheckedOuts
+            .ThenInclude(bc => bc.Book)       // Include the related Book entity for each BooksCheckedOut
+            .Where(c => c.MemberId == userId)
+            .ToList();
+        }
+
+        public List<CheckOut> GetAllPendingCheckOuts()
+        {
+            return context.CheckOuts.Include(c => c.Member).Include(c => c.booksCheckedOuts)
+            .ThenInclude(bc => bc.Book)
+                .Where(c => c.status == 1).ToList();
+        }
+
         public CheckOut GetById(int id)
         {
             return context.CheckOuts.FirstOrDefault(C => C.Id == id);
         }
 
-        public CheckOut GetUserCheckOut(string userId)
+        public CheckOut GetUserActiveCheckOut(string userId)
         {
             var checkout = context.CheckOuts.FirstOrDefault(c => c.MemberId == userId && c.status == 0);
             if (checkout == null) 

@@ -11,6 +11,25 @@ namespace LibraryManagmentSystem.Models
         {
             builder.Entity<UsersBooks>().HasKey(UB => new {UB.UserId,UB.BookId});
             base.OnModelCreating(builder);
+
+            builder.Entity<BooksCheckedOut>()
+            .HasOne(b => b.CheckOut)
+            .WithMany(c => c.booksCheckedOuts)
+            .HasForeignKey(b => b.CheckOutId)
+            .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete here
+
+            builder.Entity<CheckOut>()
+            .HasMany(c => c.booksCheckedOuts)
+            .WithOne(bc => bc.CheckOut)
+            .HasForeignKey(bc => bc.CheckOutId)
+            .OnDelete(DeleteBehavior.Cascade); // Ensure cascade is set here
+
+            // Ensure that Profile does not cascade delete
+            builder.Entity<BooksCheckedOut>()
+                .HasOne(b => b.Profile)
+                .WithMany(p => p.BorrowedBooks)
+                .HasForeignKey(b => b.ProfileId)
+                .OnDelete(DeleteBehavior.Restrict); // Restrict deletion of Profile
         }
 
 

@@ -13,6 +13,11 @@ namespace LibraryManagmentSystem.Repositories
         public bool Delete(CheckOut CheckOut);
         public void Save();
 
-        public CheckOut GetUserCheckOut(string userId);
+        public CheckOut GetUserActiveCheckOut(string userId);
+
+        public List<CheckOut> GetAllCheckOutsForUser(string userId);
+
+        public List<CheckOut> GetAllPendingCheckOuts();
+
     }
 }

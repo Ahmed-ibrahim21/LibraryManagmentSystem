@@ -11,6 +11,8 @@ namespace LibraryManagmentSystem.Repositories
         public bool Add(BooksCheckedOut bookcheckedout);
         public bool Update(BooksCheckedOut bookcheckedout);
         public bool Delete(BooksCheckedOut bookcheckedout);
+
+        public List<BooksCheckedOut> GetBooksCheckedOutByCheckoutId(int id);
         public void Save();
     }
 }

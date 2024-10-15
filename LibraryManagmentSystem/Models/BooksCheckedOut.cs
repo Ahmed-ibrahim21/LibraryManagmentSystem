@@ -9,7 +9,12 @@
         public  CheckOut? CheckOut { get; set; }
         public  int BookId { get; set; }
         public  Book? Book { get; set; }
+
+        public int ProfileId { get; set; }
+        public Profile? Profile { get; set; }
         public DateTime BorrowDate { get; set; }
         public DateTime DueDate { get; set; }
+
+        public int status { get; set; } // 0 => PendingRequest , 1 => WithUser , 2 => Returned
     }
 }

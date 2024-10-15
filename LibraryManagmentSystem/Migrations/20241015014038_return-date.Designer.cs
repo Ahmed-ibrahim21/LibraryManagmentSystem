@@ -4,6 +4,7 @@ using LibraryManagmentSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagmentSystem.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20241015014038_return-date")]
+    partial class returndate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.BooksCheckedOut", b =>
@@ -65,10 +68,7 @@ namespace LibraryManagmentSystem.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("status")
+                    b.Property<int?>("ProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -79,7 +79,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("BooksCheckedOuts", (string)null);
+                    b.ToTable("BooksCheckedOuts");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.BooksReturned", b =>
@@ -90,11 +90,8 @@ namespace LibraryManagmentSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("BooksCheckedOutId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
@@ -104,9 +101,11 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BooksCheckedOutId");
+
                     b.HasIndex("ReturnId");
 
-                    b.ToTable("BooksReturned", (string)null);
+                    b.ToTable("BooksReturned");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.CheckOut", b =>
@@ -132,7 +131,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("CheckOuts", (string)null);
+                    b.ToTable("CheckOuts");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.Profile", b =>
@@ -157,7 +156,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Profile", (string)null);
+                    b.ToTable("Profile");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.Return", b =>
@@ -183,7 +182,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Return", (string)null);
+                    b.ToTable("Return");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.User", b =>
@@ -259,17 +258,11 @@ namespace LibraryManagmentSystem.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("UserId", "BookId");
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("UsersBooks", (string)null);
+                    b.ToTable("UsersBooks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -414,31 +407,35 @@ namespace LibraryManagmentSystem.Migrations
                         .IsRequired();
 
                     b.HasOne("LibraryManagmentSystem.Models.CheckOut", "CheckOut")
-                        .WithMany("booksCheckedOuts")
+                        .WithMany()
                         .HasForeignKey("CheckOutId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryManagmentSystem.Models.Profile", "Profile")
+                    b.HasOne("LibraryManagmentSystem.Models.Profile", null)
                         .WithMany("BorrowedBooks")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("ProfileId");
 
                     b.Navigation("Book");
 
                     b.Navigation("CheckOut");
-
-                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.BooksReturned", b =>
                 {
+                    b.HasOne("LibraryManagmentSystem.Models.BooksCheckedOut", "BooksCheckedOut")
+                        .WithMany()
+                        .HasForeignKey("BooksCheckedOutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LibraryManagmentSystem.Models.Return", "Return")
                         .WithMany()
                         .HasForeignKey("ReturnId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BooksCheckedOut");
 
                     b.Navigation("Return");
                 });
@@ -552,11 +549,6 @@ namespace LibraryManagmentSystem.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LibraryManagmentSystem.Models.CheckOut", b =>
-                {
-                    b.Navigation("booksCheckedOuts");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.Profile", b =>

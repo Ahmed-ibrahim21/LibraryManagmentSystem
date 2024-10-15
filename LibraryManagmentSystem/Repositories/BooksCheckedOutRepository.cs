@@ -42,6 +42,11 @@ namespace LibraryManagmentSystem.Repositories
             return context.BooksCheckedOuts.ToList();
         }
 
+        public List<BooksCheckedOut> GetBooksCheckedOutByCheckoutId(int id)
+        {
+            return context.BooksCheckedOuts.Where(BC => BC.CheckOutId == id).ToList();
+        }
+
         public BooksCheckedOut GetById(int BookId,int CheckoutId)
         {
             return context.BooksCheckedOuts.FirstOrDefault(B => B.CheckOutId == CheckoutId && B.BookId == BookId);

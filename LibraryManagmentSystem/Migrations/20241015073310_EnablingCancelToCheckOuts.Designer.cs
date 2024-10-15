@@ -4,6 +4,7 @@ using LibraryManagmentSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagmentSystem.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20241015073310_EnablingCancelToCheckOuts")]
+    partial class EnablingCancelToCheckOuts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.BooksCheckedOut", b =>
@@ -79,7 +82,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("BooksCheckedOuts", (string)null);
+                    b.ToTable("BooksCheckedOuts");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.BooksReturned", b =>
@@ -106,7 +109,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("ReturnId");
 
-                    b.ToTable("BooksReturned", (string)null);
+                    b.ToTable("BooksReturned");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.CheckOut", b =>
@@ -132,7 +135,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("CheckOuts", (string)null);
+                    b.ToTable("CheckOuts");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.Profile", b =>
@@ -157,7 +160,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Profile", (string)null);
+                    b.ToTable("Profile");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.Return", b =>
@@ -183,7 +186,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Return", (string)null);
+                    b.ToTable("Return");
                 });
 
             modelBuilder.Entity("LibraryManagmentSystem.Models.User", b =>
@@ -269,7 +272,7 @@ namespace LibraryManagmentSystem.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("UsersBooks", (string)null);
+                    b.ToTable("UsersBooks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
