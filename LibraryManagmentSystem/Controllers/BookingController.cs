@@ -60,6 +60,7 @@ namespace LibraryManagmentSystem.Controllers
             return RedirectToAction("Index","Book");
         }
 
+        [Authorize(Roles ="Member")]
         public IActionResult ConfirmCheckOut(int id)
         {
             var checkout = checkOutRepository.GetById(id);

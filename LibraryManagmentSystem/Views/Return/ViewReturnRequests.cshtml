@@ -1,39 +1,39 @@
 ﻿@model List<Return>
 @{
-    ViewData["Title"] = "ViewReturnRequests";
+    ViewData["Title"] = "View Return Requests";
 }
 
-<h1>ViewReturnRequests</h1>
-
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Pending Return Requests</h2>
+    <h1 class="text-center mb-4">View Return Requests</h1>
 
     @if (Model.Any())
     {
         <div class="row">
-            @foreach (var returnreq in Model)
+            @foreach (var returnReq in Model)
             {
-                <div class="col-md-12">
-                    <div class="card mb-4">
+                <div class="col-md-12 mb-4">
+                    <div class="card">
                         <div class="card-body">
                             <div class="row">
                                 <!-- Member Profile Picture -->
                                 <div class="col-md-2 text-center">
-                                    <img src="@Url.Action("GetImage","Profile",new {id = returnreq.MemberId}) ?? " ~ /images/default.jpg"" alt="Member Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;" />
+                                    <img src="@Url.Action("GetImage", "Profile", new { id = returnReq.MemberId }) ?? " ~ /images/default.jpg""
+                                         alt="Member Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px;" />
                                 </div>
 
-                                <!-- returnreq Details -->
+                                <!-- Return Request Details -->
                                 <div class="col-md-8">
-                                    <h5 class="card-title">Return ID: @returnreq.Id</h5>
-                                    <p>Member: @returnreq.Member.UserName</p>
+                                    <h5 class="card-title">Return ID: @returnReq.Id</h5>
+                                    <p><strong>Member:</strong> @returnReq.Member.UserName</p>
                                     <div>
-                                        <h6>Books Returned :</h6>
+                                        <h6>Books Returned:</h6>
                                         <div class="row">
-                                            @foreach (var book in returnreq.ReturnedBooks)
+                                            @foreach (var book in returnReq.ReturnedBooks)
                                             {
-                                                <div class="col-3 text-center">
-                                                    <div class="card mb-2">
-                                                        <img src="@Url.Action("GetImage","Book",new {id = book.BookId})" alt="@book.Book.Title" class="card-img-top" style="height: 100px; object-fit: cover;" />
+                                                <div class="col-3 text-center mb-2">
+                                                    <div class="card">
+                                                        <img src="@Url.Action("GetImage", "Book", new { id = book.BookId })"
+                                                             alt="@book.Book.Title" class="card-img-top" style="height: 100px; object-fit: cover;" />
                                                         <div class="card-body p-1">
                                                             <p class="card-text">@book.Book.Title</p>
 
@@ -42,12 +42,12 @@
                                                                 DateTime currentDate = DateTime.Now;
                                                                 TimeSpan overdue = currentDate - book.DueDate;
                                                                 int overdueDays = overdue.Days > 0 ? overdue.Days : 0;
-                                                                int penalty = overdueDays * 2; // 10 units penalty per day
+                                                                int penalty = overdueDays * 2; // Penalty calculation
                                                             }
 
-                                                            <p>Due Date: @book.DueDate.ToShortDateString()</p>
-                                                            <p>Overdue Days: @overdueDays</p>
-                                                            <p>Penalty: @penalty</p>
+                                                            <p><strong>Due Date:</strong> @book.DueDate.ToShortDateString()</p>
+                                                            <p><strong>Overdue Days:</strong> @overdueDays</p>
+                                                            <p><strong>Penalty:</strong> @penalty</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -58,7 +58,7 @@
 
                                 <!-- Accept Button -->
                                 <div class="col-md-2 text-center align-self-center">
-                                    <a href="@Url.Action("AcceptReturn", "Return", new { id = returnreq.Id })" class="btn btn-success">Accept</a>
+                                    <a href="@Url.Action("AcceptReturn", "Return", new { id = returnReq.Id })" class="btn btn-success">Accept</a>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
     else
     {
         <div class="alert alert-info text-center">
-            <p>No pending Return Requests found.</p>
+            <p>No pending return requests found.</p>
         </div>
     }
 </div>

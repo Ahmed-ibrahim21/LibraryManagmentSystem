@@ -14,10 +14,6 @@ namespace LibraryManagmentSystem.Controllers
         {
             this.ProfileRepository = ProfileRepository;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [Authorize(Roles = "Member")]
         public IActionResult MyProfile()
