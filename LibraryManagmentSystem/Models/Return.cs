@@ -13,6 +13,8 @@ namespace LibraryManagmentSystem.Models
         [ForeignKey(nameof(Member))]
         public string? MemberId { get; set; }
         public User? Member { get; set; }
-        List<BooksReturned>? ReturnedBooks { get; set; }
+        public List<BooksCheckedOut>? ReturnedBooks { get; set; }
+
+        public int status { get; set; } = 0; // 0 => Not Sent , 1 => Sent , 2 => Successful Returning Opertaion
     }
 }

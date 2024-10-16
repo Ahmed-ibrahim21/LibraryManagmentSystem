@@ -25,6 +25,7 @@ namespace LibraryManagmentSystem.Controllers
             this.profileRepository = profileRepository;
         }
 
+        [Authorize(Roles ="Member")]
         public IActionResult Index() 
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -117,6 +118,7 @@ namespace LibraryManagmentSystem.Controllers
                     {
                         bookCheckedOut.DueDate = DueDates[bookCheckedOut.Id];  // Assign DueDate
                         bookCheckedOut.BorrowDate = DateTime.Now;  // Assign BorrowDate to current time
+                        bookCheckedOut.status = 1;
                     }
                 }
                 checkout.status = 2;

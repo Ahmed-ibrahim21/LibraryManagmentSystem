@@ -1,0 +1,60 @@
+﻿@model List<Return>
+
+@{
+    ViewData["Title"] = "My Returns";
+}
+
+<h1>My Returns</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Return ID</th>
+            <th>Books</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var returnItem in Model)
+        {
+            <tr>
+                <td>@returnItem.Id</td>
+                <td>
+                    <!-- Display all books associated with this return -->
+                    @foreach (var book in returnItem.ReturnedBooks)
+                    {
+                        <p>@book.Book.Title</p>
+                    }
+                </td>
+                <td>
+                    @switch (returnItem.status)
+                    {
+                        case 0:
+                            <span>Not Sent</span>
+                            break;
+                        case 1:
+                            <span>Sent</span>
+                            break;
+                        case 2:
+                            <span>Returned</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @if (returnItem.status == 0)
+                    {
+                        <!-- Buttons for Not Sent (status 0) -->
+                            <a href="/Return/ConfirmReturn/@returnItem.Id" class="btn btn-success">Confirm</a>
+                            <a href="/Return/CancelReturn/@returnItem.Id" class="btn btn-danger">Cancel</a>
+                    }
+                    else if (returnItem.status == 1)
+                    {
+                        <!-- Button for Sent (status 1) -->
+                        <a href="/Return/CancelReturn/@returnItem.Id" class="btn btn-danger">Cancel</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

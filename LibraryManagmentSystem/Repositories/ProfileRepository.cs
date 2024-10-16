@@ -47,7 +47,7 @@ namespace LibraryManagmentSystem.Repositories
 
         public Profile GetById(string id)
         {
-            return context.Profile.Include("Member").FirstOrDefault(C => C.MemberId == id);
+            return context.Profile.Include("Member").Include(P => P.BorrowedBooks).ThenInclude(PB => PB.Book).FirstOrDefault(C => C.MemberId == id);
         }
 
         public void Save()

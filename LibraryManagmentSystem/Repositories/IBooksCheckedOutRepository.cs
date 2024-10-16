@@ -6,6 +6,7 @@ namespace LibraryManagmentSystem.Repositories
     {
         public List<BooksCheckedOut> GetAll();
 
+        public BooksCheckedOut Get(int id);
         public BooksCheckedOut GetById(int id,int CheckoutId);
 
         public bool Add(BooksCheckedOut bookcheckedout);
@@ -13,6 +14,8 @@ namespace LibraryManagmentSystem.Repositories
         public bool Delete(BooksCheckedOut bookcheckedout);
 
         public List<BooksCheckedOut> GetBooksCheckedOutByCheckoutId(int id);
+
+        public List<BooksCheckedOut> GetBooksCheckedOutsByReturnId(int id);
         public void Save();
     }
 }

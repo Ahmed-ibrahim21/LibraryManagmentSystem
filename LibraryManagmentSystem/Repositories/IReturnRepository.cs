@@ -11,6 +11,10 @@ namespace LibraryManagmentSystem.Repositories
         public bool Add(Return Return);
         public bool Update(Return Return);
         public bool Delete(Return Return);
+
+        public List<Return> GetAllreturnsForUser(string userId);
+
+        public Return GetUserActiveReturns(string userId);
         public void Save();
     }
 }

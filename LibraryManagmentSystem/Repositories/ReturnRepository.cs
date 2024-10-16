@@ -1,4 +1,5 @@
 ﻿using LibraryManagmentSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagmentSystem.Repositories
 {
@@ -65,6 +66,27 @@ namespace LibraryManagmentSystem.Repositories
                 return false;
             }
         }
+
+        public List<Return> GetAllreturnsForUser(string userId)
+        {
+            return context.returns.Include(r => r.ReturnedBooks).ThenInclude(b => b.Book).Where(R => R.MemberId == userId).ToList();
+        }
+
+        public Return GetUserActiveReturns(string userId)
+        {
+            var returnreq = context.returns.FirstOrDefault(c => c.MemberId == userId && c.status == 0);
+            if (returnreq == null)
+            {
+                returnreq = new Return();
+                return returnreq;
+            }
+            else
+            {
+                return returnreq;
+            }
+        }
+
+
     }
 }
 
