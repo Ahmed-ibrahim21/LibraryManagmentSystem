@@ -7,7 +7,7 @@ namespace LibraryManagmentSystem
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +37,16 @@ namespace LibraryManagmentSystem
                     
             var app = builder.Build();
 
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                await EnsureRoleExists(roleManager, "MEMBER");
+                await EnsureRoleExists(roleManager, "Librarian");
+            }
+
+
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -58,6 +68,20 @@ namespace LibraryManagmentSystem
                 pattern: "{controller=Book}/{action=Index}/{id?}");
 
             app.Run();
+
+
+
+
+            //check role exist or not
+            async Task EnsureRoleExists(RoleManager<IdentityRole> roleManager, string roleName)
+            {
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    var role = new IdentityRole(roleName);
+                    await roleManager.CreateAsync(role);
+                }
+            }
+
         }
     }
 }
