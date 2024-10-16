@@ -40,9 +40,9 @@ namespace LibraryManagmentSystem.Controllers
             var checkout = checkOutRepository.GetUserActiveCheckOut(userId);
             checkout.MemberId = userId;
             checkOutRepository.Update(checkout);
-            checkOutRepository.Save();
-            if (!usersBooks.GetBook(userId, book.Id))
+            if (!bookRepository.CheckIfUserHasBook(book.Id,userId))
             {
+                checkOutRepository.Save();
                 var bookcheckedout = bookCheckedOutRepository.GetById(book.Id,checkout.Id);
                 if (bookcheckedout == null)
                 {

@@ -11,6 +11,7 @@ namespace LibraryManagmentSystem.Repositories
         public bool Add(Book book);
         public bool Update(Book book);
         public bool Delete(Book book);
+        public bool CheckIfUserHasBook(int bookId, string UserId);
         public void Save();
     }
 }

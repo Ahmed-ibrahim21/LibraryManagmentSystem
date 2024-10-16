@@ -15,6 +15,8 @@ namespace LibraryManagmentSystem.Repositories
         public List<Return> GetAllreturnsForUser(string userId);
 
         public Return GetUserActiveReturns(string userId);
+
+        public List<Return> GetReturnRequests();
         public void Save();
     }
 }

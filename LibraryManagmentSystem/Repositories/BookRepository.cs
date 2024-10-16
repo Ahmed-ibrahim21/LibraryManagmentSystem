@@ -65,5 +65,16 @@ namespace LibraryManagmentSystem.Repositories
                 return false;
             }
         }
+
+        public bool CheckIfUserHasBook(int bookId, string userId)
+        {
+            // Query the context to check if the user has the book checked out
+            var bookExists = context.BooksCheckedOuts.Any(BC => (BC.status == 1 || BC.status == 0)
+                                                           && BC.CheckOut.MemberId == userId
+                                                           && BC.BookId == bookId);
+
+            // Return true if the book exists (user has it), false otherwise
+            return bookExists;
+        }
     }
 }

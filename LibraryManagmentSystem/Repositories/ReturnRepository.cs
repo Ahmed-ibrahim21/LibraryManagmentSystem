@@ -45,7 +45,7 @@ namespace LibraryManagmentSystem.Repositories
 
         public Return GetById(int id)
         {
-            return context.Returns.FirstOrDefault(C => C.Id == id);
+            return context.Returns.Include(r => r.ReturnedBooks).FirstOrDefault(C => C.Id == id);
         }
 
         public void Save()
@@ -85,7 +85,10 @@ namespace LibraryManagmentSystem.Repositories
                 return returnreq;
             }
         }
-
+        public List<Return> GetReturnRequests()
+        {
+            return context.Returns.Include(r => r.Member).Include(r => r.ReturnedBooks).ThenInclude(b => b.Book).Where(R => R.status == 1).ToList();
+        }
 
     }
 }

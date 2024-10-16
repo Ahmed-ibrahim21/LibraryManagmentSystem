@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagmentSystem.Controllers
 {
+    [Authorize]
     public class ReturnController : Controller
     {
         IBookRepository bookRepository;
@@ -47,6 +48,7 @@ namespace LibraryManagmentSystem.Controllers
             return RedirectToAction("Index", "Return");
         }
 
+        [Authorize(Roles ="Member")]
         public IActionResult ConfirmReturn(int id)
         {
             var returnreq = returnRepository.GetById(id);
@@ -59,7 +61,7 @@ namespace LibraryManagmentSystem.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles ="Member")]
         public IActionResult CancelReturn(int id)
         {
             var returnreq = returnRepository.GetById(id);
@@ -76,6 +78,38 @@ namespace LibraryManagmentSystem.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles ="Librarian")]
+        public IActionResult ViewReturnRequests() 
+        {
+            var returns = returnRepository.GetReturnRequests();
+            return View("ViewReturnRequests", returns);
+        }
+
+        [Authorize(Roles ="Librarian")]
+        public IActionResult AcceptReturn(int id) 
+        {
+            int penalty = 0;
+            int OverDueCharge = 2;
+            var returnreq = returnRepository.GetById(id);
+            foreach(var returnedbook in returnreq.ReturnedBooks)
+            {
+                returnedbook.status = 2;
+                if(DateTime.Now > returnedbook.DueDate)
+                {
+                    TimeSpan overdue = DateTime.Now - returnedbook.DueDate;
+                    int overdays = overdue.Days > 0 ? overdue.Days : 0;
+                     penalty += (overdays * OverDueCharge);
+                }
+            }
+            bookCheckedOutRepository.Save();
+            returnreq.status = 2;
+            returnreq.Penalty = penalty;
+            string librarianId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            returnreq.LibrarianId = librarianId;
+            returnRepository.Save();
+            return RedirectToAction("ViewReturnRequests");
         }
     }
 }
