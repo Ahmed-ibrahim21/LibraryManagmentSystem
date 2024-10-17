@@ -1,7 +1,10 @@
 using LibraryManagmentSystem.Models;
 using LibraryManagmentSystem.Repositories;
+using LibraryManagmentSystem.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 
 namespace LibraryManagmentSystem
 {
@@ -10,6 +13,7 @@ namespace LibraryManagmentSystem
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -34,15 +38,34 @@ namespace LibraryManagmentSystem
             builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
             builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
             builder.Services.AddScoped<IUsersBooks, UsersBooksRepository>();
-                    
+
             var app = builder.Build();
 
 
             using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                await EnsureRoleExists(roleManager, "MEMBER");
+                await EnsureRoleExists(roleManager, "Member");
                 await EnsureRoleExists(roleManager, "Librarian");
+
+                var adminCredentials = builder.Configuration.GetSection("AdminCredentials");
+                string? username = adminCredentials["Username"];
+                string? password = adminCredentials["Password"];
+
+
+                // Create a new user with the librarian role
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                User user = new User()
+                {
+                    UserName = username,
+                    PasswordHash = password
+                };
+
+                IdentityResult result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, "Librarian");
+                }
             }
 
 
@@ -77,8 +100,9 @@ namespace LibraryManagmentSystem
             {
                 if (!await roleManager.RoleExistsAsync(roleName))
                 {
-                    var role = new IdentityRole(roleName);
-                    await roleManager.CreateAsync(role);
+                    IdentityRole role = new IdentityRole();
+                    role.Name = roleName;
+                    IdentityResult result = await roleManager.CreateAsync(role);
                 }
             }
 
