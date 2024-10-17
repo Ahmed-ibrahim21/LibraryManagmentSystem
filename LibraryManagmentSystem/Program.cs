@@ -1,7 +1,9 @@
 using LibraryManagmentSystem.Models;
 using LibraryManagmentSystem.Repositories;
+using LibraryManagmentSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace LibraryManagmentSystem
 {
@@ -34,18 +36,17 @@ namespace LibraryManagmentSystem
             builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
             builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
             builder.Services.AddScoped<IUsersBooks, UsersBooksRepository>();
-                    
+
+            // Add dependency injection for User and IdentityRole
+            builder.Services.AddScoped<User>();
+            builder.Services.AddScoped<IdentityRole>(); 
+            builder.Services.AddScoped<RoleInitializer>();
+
+
+            // Add the configuration service
+            builder.Services.AddSingleton(builder.Configuration);
+
             var app = builder.Build();
-
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                await EnsureRoleExists(roleManager, "MEMBER");
-                await EnsureRoleExists(roleManager, "Librarian");
-            }
-
-
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -67,21 +68,19 @@ namespace LibraryManagmentSystem
                 name: "default",
                 pattern: "{controller=Book}/{action=Index}/{id?}");
 
-            app.Run();
 
 
-
-
-            //check role exist or not
-            async Task EnsureRoleExists(RoleManager<IdentityRole> roleManager, string roleName)
+            
+            // Initialize roles and users
+            using (var scope = app.Services.CreateScope())
             {
-                if (!await roleManager.RoleExistsAsync(roleName))
-                {
-                    var role = new IdentityRole(roleName);
-                    await roleManager.CreateAsync(role);
-                }
+                var serviceProvider = scope.ServiceProvider;
+                var roleInitializer = serviceProvider.GetRequiredService<RoleInitializer>();
+                await roleInitializer.InitializeAsync();
             }
 
+
+            app.Run();
         }
     }
 }
