@@ -1,13 +1,15 @@
 using LibraryManagmentSystem.Models;
 using LibraryManagmentSystem.Repositories;
+using LibraryManagmentSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace LibraryManagmentSystem
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,16 @@ namespace LibraryManagmentSystem
             builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
             builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
             builder.Services.AddScoped<IUsersBooks, UsersBooksRepository>();
-                    
+
+            // Add dependency injection for User and IdentityRole
+            builder.Services.AddScoped<User>();
+            builder.Services.AddScoped<IdentityRole>(); 
+            builder.Services.AddScoped<RoleInitializer>();
+
+
+            // Add the configuration service
+            builder.Services.AddSingleton(builder.Configuration);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -56,6 +67,18 @@ namespace LibraryManagmentSystem
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Book}/{action=Index}/{id?}");
+
+
+
+            
+            // Initialize roles and users
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                var roleInitializer = serviceProvider.GetRequiredService<RoleInitializer>();
+                await roleInitializer.InitializeAsync();
+            }
+
 
             app.Run();
         }
