@@ -1,6 +1,7 @@
 ﻿using LibraryManagmentSystem.Models;
 using LibraryManagmentSystem.Repositories;
 using LibraryManagmentSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -54,12 +55,14 @@ namespace LibraryManagmentSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Librarian")]
         public IActionResult LibrarianRegister()
         {
             return View("LibrarianRegister");
         }
 
         [HttpPost]
+        [Authorize(Roles = "Librarian")]
         public async Task<IActionResult> LibrarianSaveRegister(RegisterUserViewModel userViewModel)
         {
             if (ModelState.IsValid)
