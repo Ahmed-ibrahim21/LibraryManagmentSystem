@@ -18,15 +18,6 @@
 The **Library Management System** is a web application built using ASP.NET Core MVC to manage book checkouts, returns, member management, and penalties for late returns. It is designed for both librarians and members, providing role-based access control.
 
 ---
-## **Team Members**
-
-1.  **George Medhat Makram Wessa**
-2.  **Abdelrahman Ahmed Abdelrahman**
-3.  **Ahmed Ibrahim Mohamed Ibrahim** 
-4.  **Bishoy Maged Makram Wessa**
-5.  **Karin Kheir Abdallah**
-6.  **Youssef Sameh Mohamed**
----
 ## **Features**
 
 - **Book Management**: Add, edit, delete, and view books in the library.
